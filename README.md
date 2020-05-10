@@ -1,6 +1,16 @@
 # Twitter-Sentiment-Analysis-project
 
-The business objective of this project is to Extract the tweets on everyday at the particular time and perform the sentiment analysis get the insights, plot the visuals.
+The business objective of this project is to Extract the tweets on everyday at the particular time and perform the sentiment analysis get the insights from the visuals.
+
+Project life cycle:
+
+1. Data collection: scraping the data from the twitter 
+2. Data pre-processing
+3. Perform Sentiment/Emotional Analysis using NRC Lexicons
+4. Visualization : Plot the graphs
+5. Build Webapp by using Flask. Flask is a web framework. This means flask provides you with tools, libraries, and technologies that allow you to build a web application. This web application can be some web pages, a blog, a wiki or go as big as a web-based calendar application or a commercial website. 
+6. Deployment on Heroku cloud platform.
+
 The steps involved are:
   1. Extract the Tweets by screen_name/search keywords/#hashtags from twitter by using tweepy API.
   2. Data Preprocessing here in this phase the data which is extracted is in unstructured format need to clean the data by removing the       punctuations, special symbol, digits, emoji's, html links, whitespace.
