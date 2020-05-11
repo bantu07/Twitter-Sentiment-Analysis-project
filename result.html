@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.4/d3.layout.cloud.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8">
+    <style>
+
+            body {
+            background-image: url("1.JPG");
+            }
+
+
+            .cssHeaderRow {
+                background-color: #2A94D6;
+            }
+            .cssTableRow {
+                background-color: #F0F1F2;
+            }
+            .cssOddTableRow {
+                background-color: #F0F1F2;
+            }
+            .cssSelectedTableRow {
+                font-size: 20px;
+                font-weight:bold;
+            }
+            .cssHoverTableRow {
+                background: #ccc;
+            }
+            .cssHeaderCell {
+                color: #FFFFFF;
+                font-size: 15px;
+                padding: 10px !important;
+                border: solid 1px #FFFFFF;
+            }
+            .cssTableCell {
+                font-size: 15px;
+                padding: 10px !important;
+                border: solid 1px #FFFFFF;
+            }
+            .cssRowNumberCell {
+                text-align: center;
+            }
+    </style>
+
+    <div class="container">
+         <h1 class="header text-center" style="color:#DB0A5B ; font-size:260%"><b>Twitter Sentiment Analysis</b></h1>
+         <h3 class="element text-center" style="font-size:150%"></h3>
+    </div>
+
+    <head>
+       <title>Twitter Sentiment Analysis</title>
+
+    </head>
+
+    <head>
+       <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+       <script type="text/javascript">
+          google.charts.load('current', {'packages': ['corechart','bar','table']});
+
+          google.charts.setOnLoadCallback(drawChartSentimentPie);
+          google.charts.setOnLoadCallback(drawBasic);
+          google.charts.setOnLoadCallback(drawTable);
+          google.charts.setOnLoadCallback(drawEmotionalChart);
+          google.charts.setOnLoadCallback(drawStuff);
+          google.charts.setOnLoadCallback(drawLDATable);
+          
+
+
+        <!-- Sentiment Plot-->
+          function drawChartSentimentPie() {
+            var data = google.visualization.arrayToDataTable({{sentiment_pie|safe}});
+
+            var options = {
+              title: 'My Daily Activities',
+              pieHole: 0.4,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+            chart.draw(data, options);
+          }
+
+
+      <!--Source Plot-->
+          function drawBasic() {
+
+              var data = google.visualization.arrayToDataTable({{source_plot|safe}});
+
+              var options = {
+                'width':600,
+                'height':400,
+                title: 'Top 5 Twitter Platforms',
+                chartArea: {width: '50%'},
+                hAxis: {
+                  title: 'Number of users',
+                  minValue: 0
+                },
+                vAxis: {
+                  title: 'Twitter Application Platforms'
+                }
+              };
+
+              var chart = new google.visualization.BarChart(document.getElementById('bar-chart'));
+
+              chart.draw(data, options);
+            }
+
+   <!-- Tweet table-->
+
+      function drawTable() {
+        var data = google.visualization.arrayToDataTable({{table|safe}});
+
+
+        var table = new google.visualization.Table(document.getElementById('retweet-table'));
+
+        table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
+      }
+
+      <!-- LDA table-->
+
+      function drawLDATable() {
+        var data = google.visualization.arrayToDataTable({{lda_table|safe}});
+
+
+        var table = new google.visualization.Table(document.getElementById('lda-table'));
+
+        table.draw(data, {showRowNumber: false, width: '100%', height: '100%'});
+      }
+
+    <!-- Subjective Plot-->
+
+      function drawStuff() {
+        var data = new google.visualization.arrayToDataTable({{subjective_plot|safe}});
+
+        var options = {
+          width: 900,
+          bars: 'horizontal', // Required for Material Bar Charts.
+          axes: {
+            x: {
+              0: { side: 'top', label: 'Percentage'} // Top x-axis.
+            }
+          },
+          bar: { groupWidth: "60%" }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('subj'));
+        chart.draw(data, options);
+      };
+
+    <!-- Emotion Plot-->
+
+      function drawEmotionalChart() {
+              var data = google.visualization.arrayToDataTable({{emotion_plot|safe}});
+
+              var view = new google.visualization.DataView(data);
+
+
+              var options = {
+                // title: "Emotional Analysis",
+                width: 390,
+                height: 390,
+                bar: {groupWidth: "55%"},
+                backgroundColor: '#fff',
+                hAxis: {
+                title: 'Types of Emotion',
+                minValue: 0
+                },
+               vAxis: {
+                title: 'Emotional Analysis'
+                 },
+
+              };
+              var chart = new google.visualization.ColumnChart(document.getElementById("Emo-chart"));
+              chart.draw(view, options);
+          }
+
+    <!-- LDA table-->
+
+      function drawLDATable() {
+        var data = google.visualization.arrayToDataTable({{lda_table|safe}});
+
+
+        var table = new google.visualization.Table(document.getElementById('lda-table'));
+
+        table.draw(data, {showRowNumber: false, width: '100%', height: '100%'});
+      }
+
+
+
+       </script>
+    </head>
+
+   <body>
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <form method="POST" action ="/">
+                <label><b>Tweets:</b></label>
+                <input type="text" id="srch-term" name="srch-term" value="" step="any" placeholder="Search">
+                <input type="submit" value="Submit">
+            </form><br>
+
+            <form action="https://github.com/bantu07/Twitter-Sentiment-Analysis-project" target="_blank">
+                <i class="material-icons" style="font-size:23.5px;color:black">developer_mode</i>
+                <input type="submit" value="Source code on Github" />
+            </form>
+            <h3><br>Note: Please wait the analyzer might take a while to fetch the analysis report.</h3>
+
+            <hr>
+        </div>
+      </div>
+
+
+  <!-- Tweet Table Class-->
+    <div class="col-sm-6 col-md-4">
+       <div class="chart-wrapper">
+         <div class="chart-title">
+             <h3>
+                 {{search.upper()}} Tweets
+             </h3>
+         </div>
+         <div class="chart-stage" id="retweet-table">
+
+         </div>
+       </div>
+    </div>
+
+      <!--Source class-->
+        <div class="col-sm-6 col-md-4">
+            <div class="chart-wrapper">
+              <div class="chart-title">
+                  <h3>
+                      Source Plot
+                  </h3>
+              </div>
+              <div class="chart-stage" id="bar-chart" style="width: 300px; height: 400px;">
+
+              </div>
+              <div class="chart-notes">
+                  The above Plot shows the tweets from the various platforms like Twitter for Andriod, iPhone, twitter lite, TweetDeck. For more information on platforms <a href="https://en.wikipedia.org/wiki/List_of_Twitter_services_and_applications" target="_blank"><b>click here</b>.</a>
+              </div>
+            </div>
+        </div>
+
+    <!--Sentiment class-->
+        <div class="col-sm-6 col-md-4">
+            <div class="chart-wrapper">
+              <div class="chart-title">
+                  <h3>
+                      Twitter Sentiment Analysis
+                  </h3>
+              </div>
+              <div class="chart-stage" id="donutchart" style="width: 700px; height: 500px;">
+
+              </div>
+              <div class="chart-notes">
+                Tweets are given sentiment scores, based on the positive, negative and neutral words.
+              </div>
+            </div>
+        </div>
+
+  <!-- Subjective class-->
+    <div class="col-sm-6 col-md-4">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+              <h3>
+                  Subjective Analysis
+              </h3>
+          </div>
+          <div class="chart-stage" id="subj" style="width: 200px; height: 300px;">
+
+          </div>
+          <div class="chart-notes">
+              Subjective Analysis refers to sentiment/emotion of an individual, Objective Analysis refers to Object/goal oriented.
+          </div>
+        </div>
+    </div>
+
+  <!-- Emotional Class-->
+    <div class="col-sm-6 col-md-4">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+              <h3>
+                  Emotional Sentiment Analysis
+              </h3>
+          </div>
+          <div class="chart-stage" id="Emo-chart">
+
+          </div>
+          <div class="chart-notes">
+            The NRC Emotion Lexicon is a list of English words and their associations with 8 basic emotions (anger, fear, sadness, joy, surprise, trust, anticipation, disgust) word association lexicons that capture word-sentiment, word-emotion. They can be used for analysing emotions in text.
+          </div>
+        </div>
+    </div>
+
+       <!-- LDA Table Class-->
+    <div class="col-sm-6 col-md-4">
+       <div class="chart-wrapper">
+         <div class="chart-title">
+             <h3>
+                 {{search.upper()}} LDA Topics
+             </h3>
+         </div>
+         <div class="chart-stage" id="lda-table">
+
+         </div>
+           <div class="chart-notes">
+            LDA stands for Latent Dirichlet Allocation, and it is a type of topic modeling algorithm. The purpose of LDA is to learn the representation of a fixed number of topics, and given this number of topics learn the topic distribution that each document in a collection of documents, model takes documents as input and finds topics as output.
+           </div>
+        </div>
+    </div>
+
+ <!-- Word cloud-->
+
+<h3>word cloud on {{search.upper()}} </h3><div id="my_cloud"></div>
+
+
+  </script>
+
+           <script>
+
+              var word_freqs = {{ word_freqs|safe }};
+              max_freq = {{ max_freq }};
+              fill = d3.scale.category20();
+              layout = d3.layout.cloud()
+                  .size([400, 400])
+                  .words(word_freqs)
+                  .padding(2)
+                  .rotate(0)
+                  .font("Impact")
+                  .fontSize(function(d) {
+                     return (d.size/max_freq)*200;
+                  })
+                  .on("end", draws);
+
+              layout.start();
+
+              function draws(words) {
+                d3.select("#my_cloud").append("svg")
+                  .attr("width", layout.size()[1])
+                   .attr("height", layout.size()[1])
+                  .append("g")
+                  .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
+                  .selectAll("text")
+                  .data(words)
+                  .enter().append("text")
+                  .style("font-size", function(d) { return d.size + "px"; })
+                  .style("font-family", "Impact")
+                  .style("fill", function(d, i) { return fill(i); })
+                  .attr("text-anchor", "middle")
+                  .attr("transform", function(d) {
+                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                  })
+                  .text(function(d) { return d.text; });
+              }
+           </script>
+
+   </body>
+</html>
